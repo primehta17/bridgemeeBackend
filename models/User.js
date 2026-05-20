@@ -11,20 +11,16 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
-    password: { type: String, required: true, minlength: 6, select: false },
+    passwordHash: { type: String, required: true, minlength: 20, select: false },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    refreshTokenHash: { type: String, select: false, default: null },
+    refreshTokenExpiresAt: { type: Date, default: null },
   },
   { timestamps: true }
 );
 
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  next();
-});
-
 userSchema.methods.comparePassword = function (candidate) {
-  return bcrypt.compare(candidate, this.password);
+  return bcrypt.compare(candidate, this.passwordHash);
 };
 
 export default mongoose.model('User', userSchema);

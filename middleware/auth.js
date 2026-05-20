@@ -10,6 +10,9 @@ export const protect = async (req, res, next) => {
   try {
     const token = header.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (decoded.type && decoded.type !== 'access') {
+      return res.status(401).json({ message: 'Invalid access token' });
+    }
     const user = await User.findById(decoded.id);
     if (!user) {
       return res.status(401).json({ message: 'User not found' });
