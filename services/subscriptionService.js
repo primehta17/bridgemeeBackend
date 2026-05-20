@@ -2,6 +2,8 @@ import Subscription from '../models/Subscription.js';
 import Plan from '../models/Plan.js';
 import { AppError } from '../middleware/errorHandler.js';
 import { parsePagination, paginatedResponse } from '../utils/pagination.js';
+import { buildMockPaymentRecord } from '../utils/mockPayment.js';
+import { recordAudit } from './auditService.js';
 
 const addMonths = (date, months) => {
   const d = new Date(date);
@@ -42,9 +44,10 @@ export const listAllSubscriptions = async (query = {}) => {
   return paginatedResponse(items, total, page, limit);
 };
 
-export const createSubscription = async (userId, planId) => {
+export const createSubscription = async (userId, planId, payment) => {
   const plan = await Plan.findOne({ _id: planId, isActive: true });
   if (!plan) throw new AppError('Plan not found or inactive', 404);
+  const lastPayment = buildMockPaymentRecord(payment, plan.price);
 
   await expireStale(userId);
 
@@ -70,13 +73,24 @@ export const createSubscription = async (userId, planId) => {
     status: 'active',
     createdBy: userId,
     updatedBy: userId,
+    lastPayment,
   });
 
   await subscription.populate('planId');
+
+  await recordAudit({
+    entityType: 'subscription',
+    entityId: subscription._id,
+    action: 'subscribed',
+    summary: `User subscribed to plan "${plan.name}"`,
+    performedBy: userId,
+    metadata: { planId: plan._id, paymentId: lastPayment.mockTransactionId },
+  });
+
   return subscription;
 };
 
-export const changePlan = async (subscriptionId, userId, newPlanId) => {
+export const changePlan = async (subscriptionId, userId, newPlanId, payment) => {
   const subscription = await Subscription.findOne({
     _id: subscriptionId,
     userId,
@@ -94,14 +108,27 @@ export const changePlan = async (subscriptionId, userId, newPlanId) => {
     throw new AppError('You are already on this plan');
   }
 
+  const lastPayment = buildMockPaymentRecord(payment, plan.price);
+
   const startDate = new Date();
   subscription.planId = plan._id;
   subscription.startDate = startDate;
   subscription.endDate = addMonths(startDate, cycleMonths(plan.billingCycle));
   subscription.nextBillingDate = subscription.endDate;
   subscription.updatedBy = userId;
+  subscription.lastPayment = lastPayment;
   await subscription.save();
   await subscription.populate('planId');
+
+  await recordAudit({
+    entityType: 'subscription',
+    entityId: subscription._id,
+    action: 'change_plan',
+    summary: `Subscription changed to plan "${plan.name}"`,
+    performedBy: userId,
+    metadata: { planId: plan._id, paymentId: lastPayment.mockTransactionId },
+  });
+
   return subscription;
 };
 
@@ -121,5 +148,15 @@ export const cancelSubscription = async (subscriptionId, userId, isAdmin = false
   subscription.updatedBy = userId;
   await subscription.save();
   await subscription.populate('planId');
+
+  await recordAudit({
+    entityType: 'subscription',
+    entityId: subscription._id,
+    action: 'cancelled',
+    summary: `Subscription cancelled`,
+    performedBy: userId,
+    metadata: { planId: subscription.planId },
+  });
+
   return subscription;
 };

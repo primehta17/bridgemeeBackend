@@ -17,7 +17,11 @@ export const create = async (req, res) => {
   }
   const planId = req.body.planId;
   if (!planId) throw new AppError('planId is required');
-  const subscription = await subscriptionService.createSubscription(req.user._id, planId);
+  const subscription = await subscriptionService.createSubscription(
+    req.user._id,
+    planId,
+    req.body.payment
+  );
   res.status(201).json(subscription);
 };
 
@@ -30,7 +34,8 @@ export const changePlan = async (req, res) => {
   const subscription = await subscriptionService.changePlan(
     req.params.id,
     req.user._id,
-    planId
+    planId,
+    req.body.payment
   );
   res.json(subscription);
 };

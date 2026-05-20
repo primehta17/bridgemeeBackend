@@ -15,6 +15,13 @@ const subscriptionSchema = new mongoose.Schema(
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     cancelledAt: { type: Date },
+    lastPayment: {
+      method: { type: String, default: 'mock' },
+      mockTransactionId: { type: String },
+      amount: { type: Number },
+      paidAt: { type: Date },
+      cardLast4: { type: String },
+    },
   },
   { timestamps: true }
 );

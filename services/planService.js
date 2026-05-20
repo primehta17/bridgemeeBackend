@@ -1,6 +1,7 @@
 import Plan from '../models/Plan.js';
 import { parsePagination, paginatedResponse } from '../utils/pagination.js';
 import { AppError } from '../middleware/errorHandler.js';
+import { recordAudit } from './auditService.js';
 
 const buildAdminFilter = (query) => {
   const filter = {};
@@ -51,7 +52,7 @@ export const createPlan = async (body, userId) => {
     throw new AppError('Name, price, and billingCycle are required');
   }
 
-  return Plan.create({
+  const plan = await Plan.create({
     name: name.trim(),
     description: description?.trim() || '',
     price: Number(price),
@@ -61,6 +62,17 @@ export const createPlan = async (body, userId) => {
     createdBy: userId,
     updatedBy: userId,
   });
+
+  await recordAudit({
+    entityType: 'plan',
+    entityId: plan._id,
+    action: 'created',
+    summary: `Plan "${plan.name}" created`,
+    performedBy: userId,
+    metadata: { price: plan.price, billingCycle: plan.billingCycle },
+  });
+
+  return plan;
 };
 
 export const updatePlan = async (id, body, userId) => {
@@ -80,6 +92,16 @@ export const updatePlan = async (id, body, userId) => {
     { new: true, runValidators: true }
   );
   if (!plan) throw new AppError('Plan not found', 404);
+
+  await recordAudit({
+    entityType: 'plan',
+    entityId: plan._id,
+    action: 'updated',
+    summary: `Plan "${plan.name}" updated`,
+    performedBy: userId,
+    metadata: { isActive: plan.isActive },
+  });
+
   return plan;
 };
 
@@ -90,5 +112,14 @@ export const deactivatePlan = async (id, userId) => {
     { new: true }
   );
   if (!plan) throw new AppError('Plan not found', 404);
+
+  await recordAudit({
+    entityType: 'plan',
+    entityId: plan._id,
+    action: 'deactivated',
+    summary: `Plan "${plan.name}" deactivated`,
+    performedBy: userId,
+  });
+
   return plan;
 };
