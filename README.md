@@ -1,4 +1,4 @@
-# BridgeMee — Backend
+# BridgeMee - Backend
 
 Express REST API with MongoDB, JWT auth, plans, subscriptions, users, and audit logs.
 
@@ -19,16 +19,16 @@ npm run dev
 
 API: `http://localhost:5000/api`
 
-> **Monorepo:** If you downloaded the full project, this code is in the `server/` folder — run the commands above from `server/` instead of `bridgemeeBackend/`.
+> **Monorepo:** If you downloaded the full project, this code is in the `server/` folder - run the commands above from `server/` instead of `bridgemeeBackend/`.
 
 ## Environment variables
 
 Copy `.env.example` to `.env`:
 
-- `MONGODB_URI` — required  
-- `JWT_SECRET` — required  
-- `CLIENT_URL` — optional (CORS), e.g. `http://localhost:3000,https://bridgemeefrontend.onrender.com`  
-- `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_NAME` — for `npm run seed`
+- `MONGODB_URI` - required  
+- `JWT_SECRET` - required  
+- `CLIENT_URL` - optional (CORS), e.g. `http://localhost:3000,https://bridgemeefrontend.onrender.com`  
+- `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_NAME` - for `npm run seed`
 
 ## Scripts
 
@@ -53,7 +53,7 @@ npm install && npm run dev
 
 ## API (summary)
 
-Base: `/api` — local `http://localhost:5000/api`, live `https://bridgemeebackend.onrender.com/api`
+Base: `/api` - local `http://localhost:5000/api`, live `https://bridgemeebackend.onrender.com/api`
 
 - `GET /health`, `GET /` (info)  
 - Auth: `POST /auth/register`, `/login`, `/refresh`; `POST /logout`, `GET /me`  
