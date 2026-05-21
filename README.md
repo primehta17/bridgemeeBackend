@@ -27,7 +27,7 @@ The project is split into separate backend and frontend repositories. After clon
 ```text
 bridgeMee/
 ├── backend/      # Backend API - Express + MongoDB
-└──  frontend/     # Frontend SPA - React + Vite
+└── frontend/     # Frontend SPA - React + Vite
 
 ```
 
