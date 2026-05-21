@@ -12,7 +12,28 @@ import { errorHandler } from './middleware/errorHandler.js';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+const defaultOrigins = [
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'https://bridgemee-frontend-jz6wl7md8-primehta17s-projects.vercel.app',
+];
+const allowedOrigins = [
+  ...defaultOrigins,
+  ...(process.env.CLIENT_URL || '').split(',').map((s) => s.trim()).filter(Boolean),
+];
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.get('/api/health', (_, res) => res.json({ status: 'ok' }));
