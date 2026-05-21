@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 const defaultOrigins = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
-  'https://bridgemee-frontend-jz6wl7md8-primehta17s-projects.vercel.app',
+  'https://bridgemee-frontend.vercel.app/',
 ];
 const allowedOrigins = [
   ...defaultOrigins,
@@ -28,13 +28,20 @@ app.use(
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error('Not allowed by CORS'));
+        callback(null, false);
       }
     },
     credentials: true,
   })
 );
 app.use(express.json());
+
+app.get('/api', (_, res) =>
+  res.json({
+    message: 'BridgeMee API is running. Use route paths under /api (e.g. GET /api/health, POST /api/auth/login).',
+    docs: 'See repository README for the full endpoint list.',
+  })
+);
 
 app.get('/api/health', (_, res) => res.json({ status: 'ok' }));
 

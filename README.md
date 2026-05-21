@@ -4,7 +4,7 @@ A full-stack **subscription management** application with separate **User** and 
 
 | | URL |
 |---|---|
-| **Live frontend** | https://bridgemee-frontend-jz6wl7md8-primehta17s-projects.vercel.app |
+| **Live frontend** | https://bridgemee-frontend.vercel.app/ |
 | **Live backend API** | https://bridgemeebackend.onrender.com/api |
 
 ## Tech stack
