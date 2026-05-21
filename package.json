@@ -1,7 +1,7 @@
 {
-  "name": "subscription-portal-server",
+  "name": "subscription-portal-backend",
   "version": "1.0.0",
-  "description": "MERN subscription management API",
+  "description": "BridgeMee subscription management API (Express + MongoDB)",
   "main": "index.js",
   "type": "module",
   "scripts": {
