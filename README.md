@@ -1,6 +1,6 @@
 # BridgeMee - Subscription Management Portal
 
-A full-stack subscription management application with separate User and Admin roles. Users can browse plans, subscribe, upgrade or downgrade plans, and cancel subscriptions. Admins can manage plans, users, subscriptions, and audit logs.
+A full-stack subscription management application with separate User and Admin roles. Users can browse plans, subscribe, upgrade or downgrade plans, and cancel subscriptions. Admins can manage plans, users, subscriptions, and audit logs. The application includes a mock checkout flow no real payment integration.
 
 ## Deliverables
 
@@ -27,7 +27,8 @@ The project is split into separate backend and frontend repositories. After clon
 ```text
 bridgeMee/
 ├── backend/      # Backend API - Express + MongoDB
-└── frontend/     # Frontend SPA - React + Vite
+└──  frontend/     # Frontend SPA - React + Vite
+
 ```
 
 Clone the repositories:
