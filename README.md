@@ -213,3 +213,29 @@ Supported audit log filters include `page`, `limit`, `q`, `entityType`, and `act
 - Build command: `npm run build`
 - Output directory: `dist`
 - Required environment variable: `VITE_API_URL=https://bridgemeebackend.onrender.com/api`
+
+
+## Assumptions, Trade-offs, and Future Improvements
+
+### Assumptions
+
+- The checkout flow is a mock payment flow and does not process real payments.
+- Admin users are created through the seed script instead of public registration.
+- MongoDB can be configured either locally or through MongoDB Atlas.
+- Render is used for deploying both the frontend and backend.
+
+### Trade-offs
+
+- Automated tests are not included in this submission, so testing is currently handled through manual smoke testing.
+- The mock checkout flow keeps the project focused on subscription management instead of payment gateway integration.
+- Seed admin credentials are included for development and demo purposes and should be changed in production.
+
+### Future Improvements
+
+- Add unit, integration, and end-to-end tests.
+- Integrate a real payment provider such as PhonePay or Razorpay.
+- Add email notifications for subscription changes, cancellations, and renewals.
+- Add Docker support for easier local setup and deployment.
+- Improve admin analytics with charts and subscription insights.
+- Add production logging, monitoring, and error tracking.
+
