@@ -85,7 +85,7 @@ Password: admin123
 
 ```bash
 cd frontend
-cp .env.example .env   # optional locally; required for custom API URL
+cp .env.example .env.development .env.production
 npm install
 npm run dev            # local frontend
 npm run build          # production build
@@ -96,15 +96,29 @@ npm run preview        # preview production build locally
 
 | Variable | Description |
 |----------|-------------|
-| `VITE_API_URL` | Backend API base URL. Example production value: `https://bridgemeebackend.onrender.com` |
+| `VITE_API_URL` | Backend API base URL including `/api`. Example: `https://bridgemeebackend.onrender.com/api` |
+
+Copy the example file before your first run:
+
+```bash
+cp .env.example .env.development .env.production
+```
 
 ### Environment Files
 
-#### `.env.development`
-VITE_API_URL=http://localhost:5000
+**Local development** (`.env.development`):
+
+```env
+VITE_API_URL=http://localhost:5000/api
 ```
-#### `.env.production`
-VITE_API_URL=https://bridgemeebackend.onrender.com
+
+**Production build locally** (`.env.production`):
+
+```env
+VITE_API_URL=https://bridgemeebackend.onrender.com/api
+```
+
+**Render (frontend service):** set `VITE_API_URL` in the dashboard, not in the repo.
 
 ## Tests
 
@@ -214,7 +228,6 @@ Supported audit log filters include `page`, `limit`, `q`, `entityType`, and `act
 - Output directory: `dist`
 - Required environment variable: `VITE_API_URL=https://bridgemeebackend.onrender.com/api`
 
-
 ## Assumptions, Trade-offs, and Future Improvements
 
 ### Assumptions
@@ -238,4 +251,3 @@ Supported audit log filters include `page`, `limit`, `q`, `entityType`, and `act
 - Add Docker support for easier local setup and deployment.
 - Improve admin analytics with charts and subscription insights.
 - Add production logging, monitoring, and error tracking.
-
