@@ -6,10 +6,14 @@ A full-stack subscription management application with separate User and Admin ro
 
 | Item | Details |
 |------|---------|
+
+| Project Video | https://drive.google.com/file/d/1WCGodUrc7Mfq4R7y5tKoMvta_ppzVD0u/view?usp=sharing |
 | Backend source code | [primehta17/backend.git](https://github.com/primehta17/backend.git) |
 | Frontend source code | [primehta17/frontend.git](https://github.com/primehta17/frontend.git) |
 | Live frontend | [https://bridgemeefrontend.onrender.com](https://bridgemeefrontend.onrender.com) |
 | Live backend API | [https://bridgemeebackend.onrender.com/api](https://bridgemeebackend.onrender.com/api) |
+
+
 
 ## Tech Stack
 
